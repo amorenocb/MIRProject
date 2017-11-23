@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block body_title %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="page-header text-center">
+                <h1>Bienvenido al buscador por Contenido
+                </h1>
+            </div>
+        </div>
+    </div>
+{% endblock body_title %}
+{% block body_content %}
+    <div class="row">
+        <div class="col-md-3">
+            <div class="row">
+                <h2 style="text-align: center">Buscador</h2>
+                <br>
+                <form method="POST" action="">
+
+                    {% csrf_token %}
+                    <label for="search_terms">Terminos de busqueda</label>
+                    <input class="form-control" type="text" placeholder="Ingrese los terminos para la Busqueda"
+                           name="search_terms" id="search_terms">
+                    <br>
+                    <label for="top_n">Top n</label>
+                    <select name="top_n" id="top_n" class="form-control">
+                        <option selected="selected" disabled>Seleccionar</option>
+                        <option value="3">3</option>
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="15">15</option>
+                    </select>
+                    <br>
+                </form>
+            </div>
+            <div class="row" id="search-btn-row">
+                <button type="button" class="btn btn-success form-control search-btn" id="search-btn">
+                    <span class="glyphicon glyphicon-search"></span> Buscar
+                </button>
+            </div>
+        </div>
+        <div class="col-md-9 used-search-terms">
+            <div class="row">
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-md-12 image-results">
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $('#search-btn-row').on('click','#search-btn',function () {
+                var search_terms = $('#search_terms').val();
+                var top_n = $('#top_n').val();
+
+                $.ajax({
+                    url: '/',
+                    data: {
+                        'search_terms': search_terms,
+                        'top_n': top_n,
+                        csrfmiddlewaretoken: $('[name="csrfmiddlewaretoken"]').val()
+                    },
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.term_results) {
+                            $('.used-search-terms').replaceWith(data.term_results);
+                            $('.image-results').replaceWith(data.image_results);
+                        }
+                        else {
+                            localStorage.setItem("no_update", true);
+                            location.reload();
+                        }
+                    },
+                    error: function (error) {
+                        //toastr['error']('Ha ocurrido un error contactando el servidor');
+                        loadingBtn.replaceWith(btn);
+                    }
+                });
+            });
+
+        });
+    </script>
+{% endblock body_content %}
