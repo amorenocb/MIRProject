@@ -12,8 +12,7 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 
 import os
 import glove
-from gensim.models import word2vec
-
+import pickle
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -123,5 +122,10 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 glove_instance = glove.Glove()
+
+IMAGE_RETRIEVED_TAGS_FILE_PATH = 'image_tags.txt'
+IMAGE_RETRIEVED_TAGS = dict()
+with open(IMAGE_RETRIEVED_TAGS_FILE_PATH, "rb") as f:
+    IMAGE_RETRIEVED_TAGS = pickle.load(f)
 
 TERM_SEARCH_ENGINE = glove_instance.load_stanford(filename="vectorsGloveLight.txt")

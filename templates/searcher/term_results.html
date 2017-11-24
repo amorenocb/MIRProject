@@ -1,12 +1,12 @@
 <div class="col-md-9 used-search-terms">
     <div class="well col-md-10 col-md-offset-2">
-            <h3>Terminos buscados: </h3>
+            <h2>Terminos buscados: </h2>
             <ul>
-                {% for term in used_terms|dictsortreversed:"prob" %}
+                {% for term in used_terms|dictsortreversed:"sim" %}
                 {% if not forloop.last %}
-                    <li>{{ term.word }} ({{ term.prob|floatformat:4 }})</li>
+                    <li>{{ term.word }} ({{ term.sim|floatformat:4 }})</li>
                 {% else %}
-                    <li>{{ term.word }} ({{ term.prob|floatformat:4 }})</li>
+                    <li>{{ term.word }} ({{ term.sim|floatformat:4 }})</li>
                 {% endif %}
             {% endfor %}
             </ul>
