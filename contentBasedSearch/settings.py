@@ -119,13 +119,23 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
+STATICFILES_DIRS = (
+                os.path.join(BASE_DIR, 'staticfiles'), # if your staticfiles files folder is named "staticfiles"
+)
 
 glove_instance = glove.Glove()
 
-IMAGE_RETRIEVED_TAGS_FILE_PATH = 'image_tags.txt'
+print("Loading tags and images dictionary")
+IMAGE_RETRIEVED_TAGS_FILE_PATH = 'tags_images.txt'
 IMAGE_RETRIEVED_TAGS = dict()
-with open(IMAGE_RETRIEVED_TAGS_FILE_PATH, "rb") as f:
+with open("contentBasedSearch/"+IMAGE_RETRIEVED_TAGS_FILE_PATH, "rb") as f:
     IMAGE_RETRIEVED_TAGS = pickle.load(f)
+print("Finished loading dictionary")
 
+print(IMAGE_RETRIEVED_TAGS)
+
+print("Loading Glove vectors")
 TERM_SEARCH_ENGINE = glove_instance.load_stanford(filename="vectorsGloveLight.txt")
+print("Finished Loading vectors")

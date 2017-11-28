@@ -1,3 +1,23 @@
-<div class="col-md-12 results">
-    <h2>Resultados</h2>
+{% load static %}
+<div class="col-md-12 image-results">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h2>Resultados</h2>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                {% for image in found_images %}
+                    <div class="col-md-4">
+                        <div class="thumbnail">
+                            <img src="{% static image.image %}" style="width:50%;height:50%">
+                        </div>
+                    </div>
+                    {% if forloop.counter|divisibleby:3 %}
+                        </div>
+                        <div class="row">
+                    {% endif %}
+                {% endfor %}
+                </div>
+        </div>
+    </div>
 </div>

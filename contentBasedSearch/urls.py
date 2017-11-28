@@ -16,8 +16,12 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from searcher import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', views.Index.as_view()),
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+

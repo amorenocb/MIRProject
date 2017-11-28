@@ -25,11 +25,13 @@ class Index(View):
         average_word = np.average(sum_of_terms, axis=0)
 
         similar_terms = settings.TERM_SEARCH_ENGINE._similarity_query(average_word, top_n)
+
         used_terms = []
         for (word, sim) in similar_terms:
             if({'word':word,'sim':sim} not in used_terms):
                 used_terms.append({'word':word, 'sim':sim})
 
+        print(used_terms)
         term_results_template = render_to_string('searcher/term_results.html', {'used_terms': used_terms})
 
         found_images = []
@@ -38,8 +40,9 @@ class Index(View):
                 for image in settings.IMAGE_RETRIEVED_TAGS[word]:
                     if({'image':image} not in found_images):
                         found_images.append({'image':image})
+            else:
+                print("word: {} not in dicctionary".format(word))
 
-        print(found_images)
         images_results_template = render_to_string('searcher/results.html',{'found_images':found_images})
 
         context = {'term_results' : term_results_template, 'image_results' : images_results_template}
